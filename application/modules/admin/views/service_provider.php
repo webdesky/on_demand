@@ -76,8 +76,8 @@
 
 
                                 <div class="form-group"> <label class="col-md-2">Gender *</label>
-                                    <div class="col-lg-6"> <input class="form-control" type="radio" name="gender" value="">Male
-                                    <input class="form-control" type="radio" name="gender" value="">Female
+                                    <div class="col-lg-6"> <input  type="radio" name="gender" value="">Male
+                                    <input  type="radio" name="gender" value="">Female
                                         <span class="red" id="old">
                                     <?php echo form_error('gender'); ?></span> </div>
                                 </div>

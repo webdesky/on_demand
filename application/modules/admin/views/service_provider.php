@@ -45,24 +45,18 @@
                                         <span class="red" id="old">
                                             <?php echo form_error('company_id'); ?></span> </div>
                                 </div>
-
-
                                 <div class="form-group"> <label class="col-md-2">First Name *</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" name="first_name">
+                                        <input type="text" class="form-control" name="first_name" value="<?php if(!empty($service_provider[0]->first_name)){ echo $service_provider[0]->first_name;}else{ echo set_value('first_name');} ?>">
                                         <span class="red" id="old">
-                                        <?php echo form_error('first_name'); ?></span> </div>
+                                            <?php echo form_error('first_name'); ?></span> </div>
                                 </div>
-
                                 <div class="form-group"> <label class="col-md-2">Last Name *</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" name="last_name">
+                                        <input type="text" class="form-control" name="last_name" value="<?php if(!empty($service_provider[0]->last_name)){ echo $service_provider[0]->last_name;}else{ echo set_value('last_name');} ?>">
                                         <span class="red" id="old">
-                                        <?php echo form_error('last_name'); ?></span> </div>
+                                            <?php echo form_error('last_name'); ?></span> </div>
                                 </div>
-
-
-                               
                                 <div class="form-group"> <label class="col-md-2">Email *</label>
                                     <div class="col-lg-6"> <input class="form-control" type="email" placeholder="Company Email" name="email" autocomplete="off" id="email" required="required" value="<?php if(!empty($service_provider[0]->email)){ echo $service_provider[0]->email;}else{ echo set_value('email');} ?>">
                                         <span class="red" id="old">
@@ -73,16 +67,11 @@
                                         <span class="red" id="old">
                                             <?php echo form_error('password'); ?></span> </div>
                                 </div>
-
-
                                 <div class="form-group"> <label class="col-md-2">Gender *</label>
-                                    <div class="col-lg-6"> <input  type="radio" name="gender" value="">Male
-                                    <input  type="radio" name="gender" value="">Female
-                                        <span class="red" id="old">
-                                    <?php echo form_error('gender'); ?></span> </div>
+                                    <div class="col-lg-6"> <input type="radio" name="gender" value="male" <?php if(!empty($service_provider[0]->gender) && $service_provider[0]->gender=="male"){echo 'checked';}?>>Male <input type="radio" name="gender" value="female" <?php if(!empty($service_provider[0]->gender) && $service_provider[0]->gender=="female"){echo 'checked';}?>>Female <span class="red" id="old">
+                                            <?php echo form_error('gender'); ?></span> </div>
                                 </div>
-
-                                 <div class="form-group"> <label class="col-md-2">Images </label>
+                                <div class="form-group"> <label class="col-md-2">Images </label>
                                     <div class="col-lg-6"> <input name="image[]" class="form-control" type="file">
                                         <?php   
                                         if(!empty($service_provider[0]->image)){
@@ -135,10 +124,10 @@
                                         <span class="red" id="old">
                                             <?php echo form_error('phone'); ?></span> </div>
                                 </div>
-                                <div class="form-group"> <label class="col-md-2">VAT Number *</label>
-                                    <div class="col-lg-6"> <input class="form-control" type="text" placeholder="VAT Number" name="vat" autocomplete="off" id="vat" required="required" value="<?php if(!empty($service_provider[0]->vat)){ echo $service_provider[0]->vat;}else{ echo set_value('vat');} ?>">
+                                <div class="form-group"> <label class="col-md-2">Profile Description *</label>
+                                    <div class="col-lg-6"> <textarea class="form-control" name="description" id="description"><?php if(!empty($service_provider[0]->description)){ echo $service_provider[0]->description;}else{ echo set_value('description');} ?></textarea>
                                         <span class="red" id="old">
-                                            <?php echo form_error('vat'); ?></span> </div>
+                                            <?php echo form_error('description'); ?></span> </div>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="col-md-12" align="center">

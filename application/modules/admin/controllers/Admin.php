@@ -690,9 +690,12 @@ class Admin extends CI_Controller
     public function service_provider($id = null)
     {
         if ($this->controller->checkSession()) {
-            $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]');
-            $this->form_validation->set_rules('description', 'Price', 'trim|required');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[companies.email]');
+            $this->form_validation->set_rules('first_name', 'First name', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('last_name', 'Last name', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('company_id', 'Company', 'trim|required');
+            $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+            $this->form_validation->set_rules('description', 'Description', 'trim|required');
+            $this->form_validation->set_rules('email','Email', 'trim|required|valid_email|is_unique[service_provider.email]');
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
             $this->form_validation->set_rules('country', 'Country', 'trim|required');
             $this->form_validation->set_rules('state', 'State', 'trim|required');
@@ -700,7 +703,7 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('zip', 'Zip', 'trim|required');
             $this->form_validation->set_rules('address', 'Address', 'trim|required');
             $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
-            $this->form_validation->set_rules('vat', 'Vat', 'trim|required');
+
 
             if ($this->form_validation->run() == false) {
                 $this->session->set_flashdata('errors', validation_errors());
@@ -714,27 +717,31 @@ class Admin extends CI_Controller
                 $this->controller->load_view($data);
             } else {
 
-                $name         = $this->input->post('name');
+                $first_name   = $this->input->post('first_name');
+                $last_name    = $this->input->post('last_name');
                 $description  = $this->input->post('description');
                 $email        = $this->input->post('email');
+                $gender       = $this->input->post('gender');
                 $password     = $this->input->post('password');
                 $city         = $this->input->post('city');
                 $zip          = $this->input->post('zip');
                 $address      = $this->input->post('address');
                 $phone        = $this->input->post('phone');
-                $vat          = $this->input->post('vat');
+                $company_id   = $this->input->post('company_id');
 
 
                 $data              = array(
-                    'name' => $name,
+                    'first_name' => $first_name,
+                    'last_name'=>$last_name,
                     'description' => $description,
                     'email'=>$email,
                     'password' => MD5($password),
                     'city' => $city,
                     'zip'=>$zip,
                     'address' => $address,
+                    'gender'=>$gender,
                     'phone' => $phone,
-                    'vat'=>$vat,
+                    'company_id'=>$company_id,
                     'is_active' => 1,
                     'created_at' => date('Y-m-d H:i:s')
                 );

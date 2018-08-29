@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Product List </h1>
+            <h1 class="page-header">Service Provider List </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -15,7 +15,7 @@
             <?php endif ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a class="btn btn-primary" href="<?php echo base_url('admin/category')?>"><i class="fa fa-th-list">&nbsp;Add Category </i></a>
+                    <a class="btn btn-primary" href="<?php echo base_url('admin/service_provider')?>"><i class="fa fa-th-list">&nbsp;Add Service Provider </i></a>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -26,28 +26,48 @@
                                 <th>Sr.No</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Zip</th>
+                                <th>Address</th>
+                                <th>Phone</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $count=1; if(!empty($category)) {  foreach ($category as  $value) {?>
+                            <?php $count=1; if(!empty($service_provider)) {  foreach ($service_provider as  $value) {?>
                             <tr class="odd gradeX" id="tr_<?php echo $count;?>">
                                 <td>
                                     <?php echo $count; ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo ucwords($value->name); ?>
+                                    <?php echo ucwords($value->first_name.' '.$value->last_name); ?>
                                 </td>
                                 
                                 <td class="center">
                                     <?php echo $value->description;  ?>
                                 </td>
                                 <td class="center">
+                                    <?php echo $value->email;  ?>
+                                </td>
+                                <td class="center">
+                                    <?php echo $value->gender;  ?>
+                                </td>
+                                <td class="center">
+                                    <?php echo $value->zip;  ?>
+                                </td>
+                                 <td class="center">
+                                    <?php echo $value->address;  ?>
+                                </td>
+                                <td class="center">
+                                    <?php echo $value->phone;  ?>
+                                </td>
+                                <td class="center">
                                     <?php echo $value->created_at;  ?>
                                 </td>
                                  <td class="center">
-                                 <a href="<?php echo base_url('admin/category/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                 <a href="<?php echo base_url('admin/service_provider/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                  <a href="javascript:void(0)" onclick="delete_record('<?php echo $value->id?>','<?php echo $count;?>')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                 </td>
                             </tr>
@@ -84,7 +104,7 @@ function delete_record(id, tr_id) {
             type: "POST",
             data: {
                 id: id,
-                table: 'category',
+                table: 'service_provider',
             },
             success: function () {
                 swal("Done!", "It was succesfully deleted!", "success");

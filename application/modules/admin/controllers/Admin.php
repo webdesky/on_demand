@@ -298,24 +298,27 @@ class Admin extends CI_Controller
     public function profile()
     {
         if ($this->controller->checkSession()) {
-            $where         = array(
-                'id' => $this->session->userdata('id')
+            $where             = array(
+                'id' => $this->session->id
             );
             $data['users'] = $this->model->getAllwhere('users', $where);
             if (!empty($data['users'][0]->city)) {
-                $where_city                   = array(
+                $where_city                              = array(
                     'id' => $data['users'][0]->city
                 );
-                $select                       = 'state_id';
-                $where_city                   = $this->model->getAllwhere('cities', $where_city, $select);
-                $where_state                  = array(
+                $select      = 'state_id,name';
+                $where_city  = $this->model->getAllwhere('cities', $where_city, $select);
+                $where_state = array(
                     'id' => $where_city[0]->state_id
                 );
-                $select                       = 'country_id';
-                $where_state                  = $this->model->getAllwhere('states', $where_state, $select);
+                $data['users'][0]->state_id   = $where_city[0]->state_id;
+                $data['users'][0]->city_name  = $where_city[0]->name;
+                $select      = 'country_id,name';
+                $where_state = $this->model->getAllwhere('states', $where_state, $select);
                 $data['users'][0]->country_id = $where_state[0]->country_id;
+                $data['users'][0]->state_name = $where_state[0]->name;
             }
-            $data['country'] = $this->model->getAllwhere('countries');
+            $data['countries'] = $this->model->getAllwhere('countries');
             $this->form_validation->set_rules('first_name', 'First Name', 'trim|required|alpha|min_length[2]');
             $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|alpha|min_length[2]');
             $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -339,12 +342,11 @@ class Admin extends CI_Controller
                     'last_name' => $last_name,
                     'email' => $email,
                     'city' => $city,
-                    'street' => $street,
+                    'address' => $street,
                     'zip' => $zip,
                     'phone_no' => $phone_no,
                     'mobile' => $mobile_no,
                     'gender' => $gender,
-                    'blood_group' => $blood_group
                 );
                 if (isset($_FILES['image']['name']) && !empty($_FILES['image']['name'])) {
                     if (move_uploaded_file($_FILES['image']['tmp_name'], 'asset/uploads/' . $_FILES['image']['name'])) {
@@ -449,6 +451,7 @@ class Admin extends CI_Controller
             'password' => md5($old_password)
         );
         $result       = $this->model->getsingle('users', $where);
+        echo $this->db->last_query();
         if (!empty($result)) {
             echo '0';
         } else {

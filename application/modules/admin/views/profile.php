@@ -22,6 +22,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
+                        <?php //echo '<pre>'; print_r($users[0]); die;?>
                             <form role="form" method="post" action="<?php echo base_url('admin/profile') ?>" class="registration_form1" class="form-horizontal" enctype="multipart/form-data">
                                 <div class="form-group"> <label class="col-md-2">First Name:* </label>
                                     <div class="col-lg-6"> <input type="text" class="form-control" name="first_name" placeholder="Enter First Name" value="<?php echo $users[0]->first_name;?>"> <span class="red">
@@ -44,18 +45,26 @@
                                             <?php echo form_error('phone'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">Country : *</label>
-                                    <div class="col-lg-6"> <select class="form-control" name="country" id="country" onchange="get_state(this.value)"><option>--Select Country--</option><?php foreach($country as $countries){?>
-                                            <option value="<?php echo $countries->id?>"<?php if(!empty($users[0]->country_id) && ($countries->id===$users[0]->country_id)){echo 'selected';}?>><?php echo $countries->name?></option>
+                                    <div class="col-lg-6"> <select class="form-control" name="country" id="country" onchange="get_state(this.value)"><option>--Select Country--</option><?php foreach($countries as $country){?>
+                                            <option value="<?php echo $country->id?>" <?php if(!empty($users[0]->country_id) && $users[0]->country_id==$country->id){ echo 'selected';}?>>
+                                                <?php echo $country->name?>
+                                            </option>
                                             <?php }?></select> <span class="red"><?php echo form_error('country'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">State : *</label>
-                                    <div class="col-lg-6"> <select class="form-control" name="state" id="state" onchange="get_city(this.value)"><option>--Select State--</option>
+                                    <div class="col-lg-6"> <select class="form-control" name="state" id="state" onchange="get_city(this.value)">
+                                    <option>--Select State--</option>
+                                     <option value="<?php if(!empty($users[0]->state_id)){ echo $users[0]->state_id;}?>" <?php if(!empty($users[0]->state_id)){ echo 'selected';}?>>
+                                                <?php if(!empty($users[0]->state_name)){ echo $users[0]->state_name;}?>
+                                            </option>
                                         </select><span class="red">
                                             <?php echo form_error('state'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">City : *</label>
                                     <div class="col-lg-6"> <select class="form-control" name="city" id="city"><option>--Select City--</option>
-                                        </select> <span class="red"><?php echo form_error('city'); ?></span> </div>
+                                        <option value="<?php if(!empty($users[0]->city)){ echo $users[0]->city;}?>" <?php if(!empty($users[0]->city)){ echo 'selected';}?>>
+                                                <?php if(!empty($users[0]->city_name)){ echo $users[0]->city_name;}?>
+                                            </option></select> <span class="red"><?php echo form_error('city'); ?></span> </div>
                                 </div>
                                 
                                 <div class="form-group"> <label class="col-md-2">Zip : *</label>
@@ -63,8 +72,8 @@
                                             <?php echo form_error('zip'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">Street : *</label>
-                                    <div class="col-lg-6"> <textarea class="form-control" name="street" placeholder="Enter Street"><?php echo $users[0]->street;?></textarea> <span class="red">
-                                            <?php echo form_error('street'); ?></span> </div>
+                                    <div class="col-lg-6"> <textarea class="form-control" name="street" placeholder="Enter Street"><?php echo $users[0]->address;?></textarea> <span class="red">
+                                            <?php echo form_error('address'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">Profile Pic: </label>
                                     <div class="col-lg-6"> <input type="file" name="image" class="form-control"> <span class="red">

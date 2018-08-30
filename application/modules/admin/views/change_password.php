@@ -53,7 +53,7 @@
 </div>
 <script type="text/javascript">
     function check_password(data) {
-        var url = 'admin/check_password';
+        var url = "<?php echo base_url('admin/check_password')?>";
         $.ajax({
             url: url,
             type: "POST",

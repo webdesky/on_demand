@@ -92,5 +92,5 @@
 </div>
 
 <script type="text/javascript">
-$("#notice").DataTable({responsive:!0,aoColumnDefs:[{bSortable:!1,aTargets:[-1]}]});
+    $("#notice").DataTable({responsive:!0,aoColumnDefs:[{bSortable:!1,aTargets:[-1]}]});
 </script>

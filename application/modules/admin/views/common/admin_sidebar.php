@@ -38,24 +38,13 @@
                         <a href="<?php echo base_url('admin/index')?>"><i class="fa fa-dashboard fa-fw" style="font-size: 21px"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-file-text-o fa-fw" style="font-size: 21px"></i> Categories<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-user fa-fw" style="font-size: 21px"></i>User<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?php echo base_url('admin/category')?>">Add Category</a>
+                                <a href="<?php echo base_url('admin/register')?>">Add User</a>
                             </li>
                             <li>
-                                <a href="<?php echo base_url('admin/list_categories/')?>">View Categories</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-files-o fa-fw" style="font-size: 21px"></i> Sub Categories<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="<?php echo base_url('admin/sub_categories')?>">Add Sub Category</a>
-                            </li>
-                            <li>
-                                <a href="<?php echo base_url('admin/list_sub_categories/')?>">View Sub Category</a>
+                                <a href="<?php echo base_url('admin/list_user/')?>">View User's</a>
                             </li>
                         </ul>
                     </li>
@@ -80,20 +69,31 @@
                                 <a href="<?php echo base_url('admin/list_service_provider/')?>">View Service Provider</a>
                             </li>
                         </ul>
-                    </li> 
+                    </li>
                     <li>
-                        <a href="#"><i class="fa fa-user fa-fw" style="font-size: 21px"></i>User<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-file-text-o fa-fw" style="font-size: 21px"></i> Categories<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?php echo base_url('admin/register')?>">Add User</a>
+                                <a href="<?php echo base_url('admin/category')?>">Add Category</a>
                             </li>
                             <li>
-                                <a href="<?php echo base_url('admin/list_user/')?>">View User's</a>
+                                <a href="<?php echo base_url('admin/list_categories/')?>">View Categories</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-user fa-fw" style="font-size: 21px"></i>Promo Code<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-files-o fa-fw" style="font-size: 21px"></i> Sub Categories<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="<?php echo base_url('admin/sub_categories')?>">Add Sub Category</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo base_url('admin/list_sub_categories/')?>">View Sub Category</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-tags fa-fw" style="font-size: 20px"></i>Promo Code<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="<?php echo base_url('admin/promocode')?>">Add Promo Code</a>
@@ -102,7 +102,7 @@
                                 <a href="<?php echo base_url('admin/list_promocode/')?>">View Promo Code's</a>
                             </li>
                         </ul>
-                    </li>                       
+                    </li>
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->

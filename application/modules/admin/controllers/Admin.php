@@ -971,7 +971,7 @@ class Admin extends CI_Controller
                 }
                 if ($last_id) 
                 {
-                    $this->session->set_flashdata('info_message', 'Product Successfully Updated!!!');
+                    $this->session->set_flashdata('info_message', 'Promocode Successfully Updated!!!');
                 } 
                 else 
                 {

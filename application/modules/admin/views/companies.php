@@ -24,9 +24,6 @@
                 <div class="panel-body">
                     <div class="row">
                     <?php 
-                        // echo '<pre>';
-                        // print_r($companies[0]);
-                        // die;
                         if(!empty($companies[0])){
                             $url = base_url('admin/companies/'.$companies[0]->id);
                         }else{

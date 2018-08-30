@@ -150,67 +150,118 @@ class Admin extends CI_Controller
             return true;
         }
     }
-    // public function register($id = null)
-    // {
-    //     if ($this->controller->checkSession()) {
-    //         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required|callback_alpha_dash_space|min_length[2]');
-    //         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|callback_alpha_dash_space|min_length[2]');
-    //         $this->form_validation->set_rules('dob', 'Date Of Birth', 'trim|required');
-    //         if (empty($id)) {
-    //             $this->form_validation->set_rules('user_name', 'User Name', 'trim|required|is_unique[users.username]');
-    //             $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
-    //             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|alpha_numeric');
-    //         }
-    //         if ($this->form_validation->run() == false) {
-    //             $this->session->set_flashdata('errors', validation_errors());
-    //             $data['countries'] = $this->model->getall('countries');
-    //             $data['body']      = 'register';
-    //             $this->controller->load_view($data);
-    //         } else {
-    //             $first_name  = $this->input->post('first_name');
-    //             $user_name   = $this->input->post('user_name');
-    //             $last_name   = $this->input->post('last_name');
-    //             $email       = $this->input->post('email');
-    //             $password    = $this->input->post('password');
-    //             $address     = $this->input->post('address');
-    //             $phone_no    = $this->input->post('phone_no');
-    //             $mobile_no   = $this->input->post('mobile_no');
-    //             // $dob         = $this->input->post('dob');
-    //             $gender      = $this->input->post('gender');
-    //             $blood_group = $this->input->post('blood_group');
-    //             $status      = $this->input->post('status');
-    //             if (!empty($_FILES)) {
-    //                 $file_name = $this->file_upload('image');
-    //             } else {
-    //                 $file_name = '';
-    //             }
-    //             $data = array(
-    //                 'first_name' => $first_name,
-    //                 'last_name' => $last_name,
-    //                 'username' => $user_name,
-    //                 'email' => $email,
-    //                 'password' => MD5($password),
-    //                 'address' => $address,
-    //                 'phone_no' => $phone_no,
-    //                 'mobile' => $mobile_no,
-    //                 'date_of_birth' => $dob,
-    //                 'gender' => $gender,
-    //                 'blood_group' => $blood_group,
-    //                 'is_active' => $status,
-    //                 'user_role' => 3,
-    //                 'created_at' => date('Y-m-d H:i:s'),
-    //                 'profile_pic' => $file_name
-    //             );
-    //             if ($this->session->userdata('user_role') == 4) {
-    //                 $data['hospital_id'] = $this->session->userdata('hospital_id');
-    //             }
-    //             $result = $this->model->insertData('users', $data);
-    //             redirect('admin/users_list/3');
-    //         }
-    //     } else {
-    //         redirect('admin/index');
-    //     }
-    // }
+    public function register($id = null)
+    {
+        if ($this->controller->checkSession()) {
+            $this->form_validation->set_rules('first_name', 'First Name', 'trim|required|callback_alpha_dash_space|min_length[2]');
+            $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|callback_alpha_dash_space|min_length[2]');
+            if (!empty($id)) {
+                $where            = array(
+                    'id' => $id
+                );
+                $select           = 'email';
+                $users = $this->model->getAllwhere('users', $where, $select);
+                if (!empty($users[0]->email) && $users[0]->email === $this->input->post('email')) {
+                } else {
+                    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
+                }
+            }else{
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
+            }
+            $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('phone_no', 'Phone', 'trim|required|min_length[10]');
+            $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+
+
+            $this->form_validation->set_rules('country', 'country', 'trim|required');
+            $this->form_validation->set_rules('state', 'state', 'trim|required');
+            $this->form_validation->set_rules('city', 'city', 'trim|required');
+            $this->form_validation->set_rules('zip', 'zip', 'trim|required');
+
+
+            if ($this->form_validation->run() == false) {
+
+                $this->session->set_flashdata('errors', validation_errors());
+                if (!empty($id)) {
+                    $where                    = array(
+                        'id' => $id
+                    );
+                    $data['users'] = $this->model->getAllwhere('users', $where);
+                    
+                    if (!empty($data['users'][0]->city)) {
+                        $where_city                              = array(
+                            'id' => $data['users'][0]->city
+                        );
+                        $select                                  = 'state_id,name';
+                        $where_city                              = $this->model->getAllwhere('cities', $where_city, $select);
+                        $where_state                             = array(
+                            'id' => $where_city[0]->state_id
+                        );
+                        $data['users'][0]->state_id   = $where_city[0]->state_id;
+                        $data['users'][0]->city_name  = $where_city[0]->name;
+                        $select                                  = 'country_id,name';
+                        $where_state                             = $this->model->getAllwhere('states', $where_state, $select);
+                        $data['users'][0]->country_id = $where_state[0]->country_id;
+                        $data['users'][0]->state_name = $where_state[0]->name;
+                    }
+                }
+                $select = 'name,id';
+                $data['countries'] = $this->model->getAllwhere('countries','',$select);
+                $data['body']      = 'register';
+                $this->controller->load_view($data);
+            } else {
+                $first_name  = $this->input->post('first_name');
+                $last_name   = $this->input->post('last_name');
+                $email       = $this->input->post('email');
+                $password    = $this->input->post('password');
+                $address     = $this->input->post('address');
+                $phone_no    = $this->input->post('phone');
+                $gender      = $this->input->post('gender');
+                $city        = $this->input->post('city');
+                
+                if (!empty($_FILES['images']['name'][0])) {
+                    $images        = $this->file_upload('images', '', '');
+                    $file_name = $images['image'][0]['image'];
+                } else {
+                    $file_name = '';
+                }
+
+                $data = array(
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'email' => $email,
+                    'password' => MD5($password),
+                    'address' => $address,
+                    'phone_no' => $phone_no,
+                    'gender' => $gender,
+                    'is_active' => 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'profile_pic' => $file_name,
+                    'city'=>$city,
+                    'user_role'=>2
+                );
+                
+                $result = $this->model->insertData('users', $data);
+                redirect('admin/list_user');
+            }
+        } else {
+            redirect('admin/index');
+        }
+    }
+
+    public function list_user()
+    {
+        if ($this->controller->checkSession()) {
+            $select        = 'id, CONCAT(first_name," ",last_name) as full_name, email, phone_no, gender, is_active';
+            $where = array('user_role!='=>1);
+            $data['users'] = $this->model->getAllwhere('users', $where, $select);
+           // echo $this->db->last_query();die;
+            $data['body'] = 'list_user';
+            $this->controller->load_view($data);
+        } else {
+            redirect('admin/index');
+        }
+    }
     public function delete()
     {
         if ($this->controller->checkSession()) {

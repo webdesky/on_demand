@@ -1,13 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <?php if($role==2){ ?>
-            <h1 class="page-header">Doctor List</h1>
-            <?php }elseif($role==3){ ?>
-            <h1 class="page-header">Patient List</h1>
-            <?php }else{ ?>
-            <h1 class="page-header">Sub Admin List</h1>
-            <?php } ?>
+            <h1 class="page-header">Users List</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -16,18 +10,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?php 
-                        $user_role  =   $this->session->userdata('user_role'); 
-                        if($user_role==4){
-                            $rights     =   explode(',',trim($this->session->userdata('rights')->rights,'"'));   
-                            $right0     =   str_split($rights[0]);
-                        }
-                        if($user_role==1 || ($user_role==4 && $right0[0]==1)){
-                    ?>
-                    <?php if($role==2){ ?> <a class="btn btn-primary" href="<?php echo base_url('admin/add_doctor')?>"><i class="fa fa-th-list">&nbsp;Add Doctor</i></a>
-                    <?php }elseif($role==3){ ?> <a class="btn btn-primary" href="<?php echo base_url('admin/register/null/3')?>"><i class="fa fa-th-list">&nbsp;Add Patient</i></a>
-                    <?php } else{?> <a class="btn btn-primary" href="<?php echo base_url('admin/register/null/4')?>"><i class="fa fa-th-list">&nbsp;Add Subadmin</i></a>
-                    <?php }}    ?>
+                    <a class="btn btn-primary" href="<?php echo base_url('admin/register/')?>"><i class="fa fa-th-list">&nbsp;Add User</i></a>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -37,20 +20,11 @@
                                     <thead>
                                         <tr class="bg-primary">
                                             <th>Sr no.</th>
-                                            <?php if($role!=4){?>
                                             <th>Name</th>
-                                            <?php }if($user_role==4 && $role==2){?>
-                                            <th>Speciality</th>
-                                            <?php }?>
                                             <th>Email</th>
-                                            <th>Mobile</th>
-                                            <?php if($role!=4){?>
+                                            <th>Phone</th>
                                             <th>Gender</th>
-                                            <?php }?>
-                                            <th>User Role</th>
-                                            <?php if($user_role==1 || ($user_role==4 && $right0[1]==1 || $right0[2]==1)){?>
                                             <th>Action</th>
-                                            <?php }?>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,36 +33,23 @@
                                             <td>
                                                 <?php echo $i; ?>
                                             </td>
-                                            <?php if($role!=4){?>
                                             <td>
-                                                <?php echo ucfirst($users_list->user_name);?>
+                                                <?php echo ucfirst($users_list->full_name);?>
                                             </td>
-                                            <?php }if($user_role==4 && $role==2){?>
-                                            <td>
-                                                <?php echo ucfirst($users_list->speciality_name);?>
-                                            </td>
-                                            <?php }?>
                                             <td>
                                                 <?php echo $users_list->email;?>
                                             </td>
                                             <td>
-                                                <?php echo $users_list->mobile;?>
+                                                <?php echo $users_list->phone_no;?>
                                             </td>
-                                            <?php if($role!=4){?>
                                             <td>
                                                 <?php echo ucfirst($users_list->gender);?>
                                             </td>
-                                            <?php }?>
-                                            <td>
-                                                <?php if($users_list->user_role==2){ echo 'Doctor';}elseif($users_list->user_role==3){ echo 'Patient';}elseif($users_list->user_role==4){ echo 'Sub-Admin';}else{echo 'Admin';}?>
+                                            <td class="center">
+                                                <a title="Edit" href="<?php echo base_url('admin/register/'.$users_list->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+                                                <a title="Delete" href="javascript:void(0)" onclick="delete_record('<?php echo $users_list->id?>','<?php echo $i;?>','users')"><i class="fa fa-trash-o" aria-hidden="true"></i></a> |
+                                                <a title="Change Status" href="javascript:void(0)" onclick="change_status('<?php echo $users_list->id?>','users','<?php echo $users_list->is_active;?>')"><i class="fa fa-power-off" aria-hidden="true"></i></a>
                                             </td>
-                                            <?php if($user_role==1 || ($user_role==4 && $right0[1]==1 || $right0[2]==1)){?>
-                                            <td>
-                                                <?php if($user_role==1 || ($user_role==4 && $right0[1]==1)){?> <a href="<?php echo base_url('admin/edit_user/'.$users_list->id)?>" title="Edit"><span class="glyphicon glyphicon-edit"></span></a> |
-                                                <?php }if($user_role==1 || ($user_role==4 && $right0[2]==1)){?> <a href="javascript:void(0)" onclick="delete_user('<?php echo $users_list->id?>','<?php echo $i;?>')" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                                <?php }?>
-                                            </td>
-                                            <?php }?>
                                         </tr>
                                         <?php $i++;}}?>
                                     </tbody>

@@ -43,12 +43,12 @@ class Admin extends CI_Controller
     public function dashboard()
     {
         if ($this->controller->checkSession()) {
-            $user_role             = $this->session->userdata('user_role');
-            $where                 = array(
+            $user_role    = $this->session->userdata('user_role');
+            $where        = array(
                 'is_active' => 1
             );
             //$data['totalProducts'] = $this->model->getcount('products', $where);
-            $data['body']          = 'dashboard';
+            $data['body'] = 'dashboard';
             $this->controller->load_view($data);
         } else {
             redirect('admin/index');
@@ -470,27 +470,29 @@ class Admin extends CI_Controller
             if ($this->form_validation->run() == false) {
                 $this->session->set_flashdata('errors', validation_errors());
                 if (!empty($id)) {
-                    $where =  array('id'=>$id);
+                    $where              = array(
+                        'id' => $id
+                    );
                     $data['categories'] = $this->model->getAllwhere('category', $where);
                 }
                 $data['body'] = 'categories';
                 $this->controller->load_view($data);
             } else {
-
-                $name              = $this->input->post('name');
-                $description       = $this->input->post('description');
-                $data              = array(
+                
+                $name        = $this->input->post('name');
+                $description = $this->input->post('description');
+                $data        = array(
                     'name' => $name,
                     'description' => $description,
                     'is_active' => 1,
-                    'added_by'=>$this->session->userdata('id'),
+                    'added_by' => $this->session->userdata('id'),
                     'created_at' => date('Y-m-d H:i:s')
                 );
-
+                
                 if (!empty($_FILES['images']['name'][0])) {
-                    $images = $this->file_upload('images', '', '');
+                    $images        = $this->file_upload('images', '', '');
                     $data['image'] = $images['image'][0]['image'];
-                }else{
+                } else {
                     $data['image'] = '';
                 }
                 if (!empty($id)) {
@@ -525,8 +527,8 @@ class Admin extends CI_Controller
             redirect('admin/index');
         }
     }
-
-
+    
+    
     public function sub_categories($id = null)
     {
         if ($this->controller->checkSession()) {
@@ -534,33 +536,37 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('description', 'Price', 'trim|required');
             $this->form_validation->set_rules('cat_id', 'Category', 'trim|required');
             //$this->form_validation->set_rules('description', 'Price', 'trim|required');
-
+            
             if ($this->form_validation->run() == false) {
                 $this->session->set_flashdata('errors', validation_errors());
                 if (!empty($id)) {
-                    $where =  array('id'=>$id);
+                    $where                  = array(
+                        'id' => $id
+                    );
                     $data['sub_categories'] = $this->model->getAllwhere('sub_category', $where);
                 }
-                $where =  array('is_active'=>1);
+                $where              = array(
+                    'is_active' => 1
+                );
                 $data['categories'] = $this->model->getAllwhere('category', $where);
-                $data['body'] = 'sub_categories';
+                $data['body']       = 'sub_categories';
                 $this->controller->load_view($data);
             } else {
-
-                $name              = $this->input->post('name');
-                $description       = $this->input->post('description');
-                $cat_id            = $this->input->post('cat_id');
-                $data              = array(
+                
+                $name        = $this->input->post('name');
+                $description = $this->input->post('description');
+                $cat_id      = $this->input->post('cat_id');
+                $data        = array(
                     'name' => $name,
                     'description' => $description,
-                    'cat_id'=>$cat_id,
+                    'cat_id' => $cat_id,
                     'is_active' => 1,
-                    'added_by'=>$this->session->userdata('id'),
+                    'added_by' => $this->session->userdata('id'),
                     'created_at' => date('Y-m-d H:i:s')
                 );
-
+                
                 if (!empty($_FILES['image']['name'][0])) {
-                    $images = $this->file_upload('image', '', '');
+                    $images        = $this->file_upload('image', '', '');
                     $data['image'] = $images['image'][0]['image'];
                 }
                 if (!empty($id)) {
@@ -589,21 +595,34 @@ class Admin extends CI_Controller
     {
         if ($this->controller->checkSession()) {
             $data['sub_categories'] = $this->model->getAllwhere('sub_category');
-            $data['body']     = 'list_sub_categories';
+            $data['body']           = 'list_sub_categories';
             $this->controller->load_view($data);
         } else {
             redirect('admin/index');
         }
     }
-
-
-
+    
+    
+    
     public function companies($id = null)
     {
         if ($this->controller->checkSession()) {
             $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]');
             $this->form_validation->set_rules('description', 'Price', 'trim|required');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[companies.email]');
+            if (!empty($id)) {
+                $where            = array(
+                    'id' => $id
+                );
+                $select           = 'email';
+                $companies = $this->model->getAllwhere('companies', $where, $select);
+                if (!empty($companies[0]->email) && $companies[0]->email === $this->input->post('email')) {
+                } else {
+                    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[companies.email]');
+                }
+            }else{
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[companies.email]');
+            }
+            
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
             $this->form_validation->set_rules('country', 'Country', 'trim|required');
             $this->form_validation->set_rules('state', 'State', 'trim|required');
@@ -612,45 +631,63 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('address', 'Address', 'trim|required');
             $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
             $this->form_validation->set_rules('vat', 'Vat', 'trim|required');
-
+            
             if ($this->form_validation->run() == false) {
                 $this->session->set_flashdata('errors', validation_errors());
                 if (!empty($id)) {
-                    $where =  array('id'=>$id);
+                    $where             = array(
+                        'id' => $id
+                    );
                     $data['companies'] = $this->model->getAllwhere('companies', $where);
+                    if (!empty($data['companies'][0]->city)) {
+                        $where_city                              = array(
+                            'id' => $data['companies'][0]->city
+                        );
+                        $select      = 'state_id,name';
+                        $where_city  = $this->model->getAllwhere('cities', $where_city, $select);
+                        $where_state = array(
+                            'id' => $where_city[0]->state_id
+                        );
+                        $data['companies'][0]->state_id   = $where_city[0]->state_id;
+                        $data['companies'][0]->city_name  = $where_city[0]->name;
+                        $select      = 'country_id,name';
+                        $where_state = $this->model->getAllwhere('states', $where_state, $select);
+                        $data['companies'][0]->country_id = $where_state[0]->country_id;
+                        $data['companies'][0]->state_name = $where_state[0]->name;
+                    }
                 }
-                 $data['countries'] = $this->model->getAllwhere('countries');
-                $data['body'] = 'companies';
+                $data['countries'] = $this->model->getAllwhere('countries');
+                $data['body']      = 'companies';
                 $this->controller->load_view($data);
             } else {
-
-                $name         = $this->input->post('name');
-                $description  = $this->input->post('description');
-                $email        = $this->input->post('email');
-                $password     = $this->input->post('password');
-                $city         = $this->input->post('city');
-                $zip          = $this->input->post('zip');
-                $address      = $this->input->post('address');
-                $phone        = $this->input->post('phone');
-                $vat          = $this->input->post('vat');
-
-
-                $data              = array(
+                
+                $name        = $this->input->post('name');
+                $description = $this->input->post('description');
+                $email       = $this->input->post('email');
+                $password    = $this->input->post('password');
+                $city        = $this->input->post('city');
+                $zip         = $this->input->post('zip');
+                $address     = $this->input->post('address');
+                $phone       = $this->input->post('phone');
+                $vat         = $this->input->post('vat');
+                
+                
+                $data = array(
                     'name' => $name,
                     'description' => $description,
-                    'email'=>$email,
+                    'email' => $email,
                     'password' => MD5($password),
                     'city' => $city,
-                    'zip'=>$zip,
+                    'zip' => $zip,
                     'address' => $address,
                     'phone' => $phone,
-                    'vat'=>$vat,
+                    'vat' => $vat,
                     'is_active' => 1,
                     'created_at' => date('Y-m-d H:i:s')
                 );
-
+                
                 if (!empty($_FILES['image']['name'][0])) {
-                    $images = $this->file_upload('image', '', '');
+                    $images        = $this->file_upload('image', '', '');
                     $data['image'] = $images['image'][0]['image'];
                 }
                 if (!empty($id)) {
@@ -679,14 +716,14 @@ class Admin extends CI_Controller
     {
         if ($this->controller->checkSession()) {
             $data['companies'] = $this->model->getAllwhere('companies');
-            $data['body']     = 'list_companies';
+            $data['body']      = 'list_companies';
             $this->controller->load_view($data);
         } else {
             redirect('admin/index');
         }
     }
-
-
+    
+    
     public function service_provider($id = null)
     {
         if ($this->controller->checkSession()) {
@@ -695,7 +732,17 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('company_id', 'Company', 'trim|required');
             $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
             $this->form_validation->set_rules('description', 'Description', 'trim|required');
-            $this->form_validation->set_rules('email','Email', 'trim|required|valid_email|is_unique[service_provider.email]');
+            if (!empty($id)) {
+                $where            = array(
+                    'id' => $id
+                );
+                $select           = 'email';
+                $service_provider = $this->model->getAllwhere('service_provider', $where, $select);
+                if (!empty($service_provider[0]->email) && $service_provider[0]->email === $this->input->post('email')) {
+                } else {
+                    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[service_provider.email]');
+                }
+            }
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
             $this->form_validation->set_rules('country', 'Country', 'trim|required');
             $this->form_validation->set_rules('state', 'State', 'trim|required');
@@ -703,51 +750,70 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('zip', 'Zip', 'trim|required');
             $this->form_validation->set_rules('address', 'Address', 'trim|required');
             $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
-
-
+            
+            
             if ($this->form_validation->run() == false) {
                 $this->session->set_flashdata('errors', validation_errors());
                 if (!empty($id)) {
-                    $where =  array('id'=>$id);
+                    $where                    = array(
+                        'id' => $id
+                    );
                     $data['service_provider'] = $this->model->getAllwhere('service_provider', $where);
+                    
+                    if (!empty($data['service_provider'][0]->city)) {
+                        $where_city                              = array(
+                            'id' => $data['service_provider'][0]->city
+                        );
+                        $select                                  = 'state_id,name';
+                        $where_city                              = $this->model->getAllwhere('cities', $where_city, $select);
+                        $where_state                             = array(
+                            'id' => $where_city[0]->state_id
+                        );
+                        $data['service_provider'][0]->state_id   = $where_city[0]->state_id;
+                        $data['service_provider'][0]->city_name  = $where_city[0]->name;
+                        $select                                  = 'country_id,name';
+                        $where_state                             = $this->model->getAllwhere('states', $where_state, $select);
+                        $data['service_provider'][0]->country_id = $where_state[0]->country_id;
+                        $data['service_provider'][0]->state_name = $where_state[0]->name;
+                    }
                 }
                 $data['countries'] = $this->model->getAllwhere('countries');
                 $data['companies'] = $this->model->getAllwhere('companies');
-                $data['body'] = 'service_provider';
+                $data['body']      = 'service_provider';
                 $this->controller->load_view($data);
             } else {
-
-                $first_name   = $this->input->post('first_name');
-                $last_name    = $this->input->post('last_name');
-                $description  = $this->input->post('description');
-                $email        = $this->input->post('email');
-                $gender       = $this->input->post('gender');
-                $password     = $this->input->post('password');
-                $city         = $this->input->post('city');
-                $zip          = $this->input->post('zip');
-                $address      = $this->input->post('address');
-                $phone        = $this->input->post('phone');
-                $company_id   = $this->input->post('company_id');
-
-
-                $data              = array(
+                
+                $first_name  = $this->input->post('first_name');
+                $last_name   = $this->input->post('last_name');
+                $description = $this->input->post('description');
+                $email       = $this->input->post('email');
+                $gender      = $this->input->post('gender');
+                $password    = $this->input->post('password');
+                $city        = $this->input->post('city');
+                $zip         = $this->input->post('zip');
+                $address     = $this->input->post('address');
+                $phone       = $this->input->post('phone');
+                $company_id  = $this->input->post('company_id');
+                
+                
+                $data = array(
                     'first_name' => $first_name,
-                    'last_name'=>$last_name,
+                    'last_name' => $last_name,
                     'description' => $description,
-                    'email'=>$email,
+                    'email' => $email,
                     'password' => MD5($password),
                     'city' => $city,
-                    'zip'=>$zip,
+                    'zip' => $zip,
                     'address' => $address,
-                    'gender'=>$gender,
+                    'gender' => $gender,
                     'phone' => $phone,
-                    'company_id'=>$company_id,
+                    'company_id' => $company_id,
                     'is_active' => 1,
                     'created_at' => date('Y-m-d H:i:s')
                 );
-
+                
                 if (!empty($_FILES['image']['name'][0])) {
-                    $images = $this->file_upload('image', '', '');
+                    $images        = $this->file_upload('image', '', '');
                     $data['image'] = $images['image'][0]['image'];
                 }
                 if (!empty($id)) {
@@ -776,7 +842,7 @@ class Admin extends CI_Controller
     {
         if ($this->controller->checkSession()) {
             $data['service_provider'] = $this->model->getAllwhere('service_provider');
-            $data['body']     = 'list_service_provider';
+            $data['body']             = 'list_service_provider';
             $this->controller->load_view($data);
         } else {
             redirect('admin/index');
@@ -784,10 +850,12 @@ class Admin extends CI_Controller
     }
     public function get_record()
     {
-        $id    = $this->input->get('id');
-        $table = $this->input->get('table');
-        $field = $this->input->get('field');
-        $where  = array("$field" => $id);
+        $id     = $this->input->get('id');
+        $table  = $this->input->get('table');
+        $field  = $this->input->get('field');
+        $where  = array(
+            "$field" => $id
+        );
         $select = 'id, name';
         $states = $this->model->getAllwhere($table, $where, $select);
         echo json_encode($states);

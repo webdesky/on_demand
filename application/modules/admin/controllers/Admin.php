@@ -230,33 +230,20 @@ class Admin extends CI_Controller
         if ($this->controller->checkSession()) {
             $id     = $this->input->post('id');
             $table  = $this->input->post('table');
+            $status  = $this->input->post('status');
             $where  = array(
                 'id' => $id
             );
             $data   = array(
-                'is_active' => 0
+                'is_active' => 1-$status
             );
+
             $result = $this->model->updateFields($table, $data, $where);
         } else {
             redirect('admin/index');
         }
     }
-    public function update_status()
-    {
-        if ($this->controller->checkSession()) {
-            $id     = $this->input->post('id');
-            $active = $this->input->post('active');
-            $data   = array(
-                'is_active' => $active
-            );
-            $where  = array(
-                'id' => $id
-            );
-            $this->model->update('appointment', $data, $where);
-        } else {
-            redirect('admin/index');
-        }
-    }
+
     public function profile()
     {
         if ($this->controller->checkSession()) {
@@ -860,4 +847,5 @@ class Admin extends CI_Controller
         $states = $this->model->getAllwhere($table, $where, $select);
         echo json_encode($states);
     }
+
 }

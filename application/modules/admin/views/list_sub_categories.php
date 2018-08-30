@@ -27,7 +27,6 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Date</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,13 +46,9 @@
                                 <td class="center">
                                     <?php echo $value->created_at;  ?>
                                 </td>
-                                <td class="center">
-                                    <?php if($value->is_active==1){echo '<b style="color:green">Active</b>';}else{echo '<b style="color:red">Inavtive</b>';}?>
-                                </td>
-                                <td class="center">
-                                    <a href="<?php echo base_url('admin/sub_categories/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
-                                    <a href="javascript:void(0)" onclick="delete_record('<?php echo $value->id?>','<?php echo $count;?>','sub_category')"><i class="fa fa-trash-o" aria-hidden="true"></i></a> |
-                                    <a title="Change Status" href="javascript:void(0)" onclick="change_status('<?php echo $value->id?>','sub_category','<?php echo $value->is_active?>')"><i class="fa fa-power-off" aria-hidden="true"></i></a>
+                                 <td class="center">
+                                 <a href="<?php echo base_url('admin/sub_categories/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                 <a href="javascript:void(0)" onclick="delete_record('<?php echo $value->id?>','<?php echo $count;?>')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                 </td>
                             </tr>
                             <?php $count++; }}?>
@@ -72,5 +67,53 @@
 </div>
 
 <script type="text/javascript">
-$("#notice").DataTable({responsive:!0,aoColumnDefs:[{bSortable:!1,aTargets:[-1]}]});
+
+function delete_record(id, tr_id) {
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: false
+    }, function (isConfirm) {
+        if (!isConfirm) return;
+        $.ajax({
+            url: "<?php echo base_url('admin/delete')?>",
+            type: "POST",
+            data: {
+                id: id,
+                table: 'sub_category',
+            },
+            success: function () {
+                swal("Done!", "It was succesfully deleted!", "success");
+                 $('#tr_' + tr_id).remove();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                swal("Error deleting!", "Please try again", "error");
+            }
+        });
+    });
+}
+   
+
+// $(document).ready(function() {
+//     $('#notice').DataTable( {
+//         responsive: {
+//             details: {
+//                 display: $.fn.dataTable.Responsive.display.modal( {
+//                     header: function ( row ) {
+//                         var data = row.data();
+//                         return 'Details for '+data[1];
+//                     }
+//                 } ),
+//                 renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+//                     tableClass: 'table'
+//                 } )
+//             }
+//         }
+//     } );
+// });
+
 </script>

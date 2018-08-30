@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Companies List </h1>
+            <h1 class="page-header">PromoCode List </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -15,7 +15,7 @@
             <?php endif ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a class="btn btn-primary" href="<?php echo base_url('admin/companies')?>"><i class="fa fa-th-list">&nbsp;Add Comapny </i></a>
+                    <a class="btn btn-primary" href="<?php echo base_url('admin/promocode')?>"><i class="fa fa-th-list">&nbsp;Add PromoCode </i></a>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -24,51 +24,55 @@
                         <thead>
                             <tr class="bg-primary">
                                 <th>Sr.No</th>
-                                <th>Name</th>
+                                <th>Code</th>
                                 <th>Description</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Zip</th>
-                                <th>Phone</th>
-                                <th>VAT</th>
-                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Validity</th>
+                                <th>Active</th>
+                                <th>Expiry</th>
+                                <th>Limit</th>
+                                <th>status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $count=1; if(!empty($companies)) {  foreach ($companies as  $value) {?>
+                            <?php $count=1; if(!empty($promocode)) {  foreach ($promocode as  $value) {?>
                             <tr class="odd gradeX" id="tr_<?php echo $count;?>">
                                 <td>
                                     <?php echo $count; ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo ucwords($value->name); ?>
+                                    <?php echo ucwords($value->promo_code); ?>
                                 </td>
                                 
                                 <td class="center">
                                     <?php echo $value->description;  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->email;  ?>
+                                    <?php echo $value->discount_type;  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->address;  ?>
+                                    <?php echo $value->discount_amount;  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->zip;  ?>
+                                    <?php echo $value->validity_type;  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->phone;  ?>
+                                    <?php if($value->active_date!='0000-00-00' && $value->active_date!='1970-01-01'){ echo date('Y-m-d',strtotime($value->active_date));}else{ echo "";}  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->vat;  ?>
+                                    <?php  if($value->expiry_date!='0000-00-00' && $value->expiry_date!='1970-01-01'){ echo date('Y-m-d',strtotime($value->expiry_date));}else{ echo "";}  ?>
                                 </td>
                                 <td class="center">
-                                    <?php echo $value->created_at;  ?>
+                                    <?php echo $value->usage_limit;  ?>
+                                </td>
+                                <td class="center">
+                                    <?php if($value->is_active==1){ echo "active";}else{echo "inactive"; }  ?>
                                 </td>
                                  <td class="center">
-                                 <a href="<?php echo base_url('admin/companies/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                 <a href="javascript:void(0)" onclick="delete_record('<?php echo $value->id?>','<?php echo $count;?>')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    <a href="<?php echo base_url('admin/promocode/'.$value->id); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a href="javascript:void(0)" onclick="delete_record('<?php echo $value->id?>','<?php echo $count;?>')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                 </td>
                             </tr>
                             <?php $count++; }}?>
@@ -104,7 +108,7 @@ function delete_record(id, tr_id) {
             type: "POST",
             data: {
                 id: id,
-                table: 'companies',
+                table: 'promo_code',
             },
             success: function () {
                 swal("Done!", "It was succesfully deleted!", "success");

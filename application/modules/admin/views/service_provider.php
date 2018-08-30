@@ -24,12 +24,12 @@
                 <div class="panel-body">
                     <div class="row">
                         <?php 
-                            if(!empty($service_provider[0])){
-                                $url = base_url('admin/service_provider/'.$service_provider[0]->id);
-                            }else{
-                                $url = base_url('admin/service_provider/');
-                            }
-                        ?>
+                        if(!empty($service_provider[0])){
+                            $url = base_url('admin/service_provider/'.$service_provider[0]->id);
+                        }else{
+                            $url = base_url('admin/service_provider/');
+                        }
+                    ?>
                         <div class="col-lg-12 col-md-12">
                             <form role="form" method="post" action="<?php echo $url; ?>" class="registration_form1" enctype="multipart/form-data">
                                 <div class="form-group"> <label class="col-md-2">Company Name *</label>
@@ -82,21 +82,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">Country *</label>
-                                    <div class="col-lg-6"> <select class="form-control" name="country" id="country" onchange="get_state(this.value)"><option value="">--Select Country--</option>
+                                    <div class="col-lg-6"> <select class="form-control" name="country" id="country" onchange="get_state(this.value)">
+                                            <option value="">--Select Country--</option>
                                             <?php foreach($countries as $country){?>
-                                            <option value="<?php echo $country->id?>" <?php if(!empty($service_provider[0]->country_id) && $service_provider[0]->country_id==$country->id){ echo 'selected';}?>>
+                                            <option value="<?php echo $country->id?>">
                                                 <?php echo $country->name?>
                                             </option>
                                             <?php }?>
                                         </select>
-                                        <span class="red" id="old"><?php echo form_error('country'); ?></span> </div>
+                                        <span class="red" id="old">
+                                            <?php echo form_error('country'); ?></span> </div>
                                 </div>
                                 <div class="form-group"> <label class="col-md-2">State *</label>
                                     <div class="col-lg-6"> <select class="form-control" name="state" id="state" onchange="get_city(this.value)">
                                             <option value="">--Select State--</option>
-                                            <option value="<?php if(!empty($service_provider[0]->state_id)){ echo $service_provider[0]->state_id;}?>" <?php if(!empty($service_provider[0]->state_id)){ echo 'selected';}?>>
-                                                <?php if(!empty($service_provider[0]->state_name)){ echo $service_provider[0]->state_name;}?>
-                                            </option>
+                                            <option value=""></option>
                                         </select>
                                         <span class="red" id="old">
                                             <?php echo form_error('state'); ?></span> </div>
@@ -104,9 +104,7 @@
                                 <div class="form-group"> <label class="col-md-2">City *</label>
                                     <div class="col-lg-6"> <select class="form-control" name="city" id="city">
                                             <option value="">--Select City--</option>
-                                            <option value="<?php if(!empty($service_provider[0]->city)){ echo $service_provider[0]->city;}?>" <?php if(!empty($service_provider[0]->city)){ echo 'selected';}?>>
-                                                <?php if(!empty($service_provider[0]->city_name)){ echo $service_provider[0]->city_name;}?>
-                                            </option>
+                                            <option value=""></option>
                                         </select>
                                         <span class="red" id="old">
                                             <?php echo form_error('city'); ?></span> </div>

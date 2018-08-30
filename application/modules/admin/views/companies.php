@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add Company</h1>
+            <h1 class="page-header">Add Category</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -67,10 +67,8 @@
                                     <div class="col-lg-6"> <select class="form-control" name="country" id="country" onchange="get_state(this.value)">
                                         <option value="">--Select Country--</option>
                                         <?php foreach($countries as $country){?>
-                                            <option value="<?php echo $country->id?>" <?php if(!empty($companies[0]->country_id) && $companies[0]->country_id==$country->id){ echo 'selected';}?>>
-                                                <?php echo $country->name?>
-                                            </option>
-                                            <?php }?>
+                                        <option value="<?php echo $country->id?>"><?php echo $country->name?></option>
+                                        <?php }?>
                                     </select>
                                     <span class="red" id="old">
                                             <?php echo form_error('country'); ?></span> </div>
@@ -78,9 +76,7 @@
                                 <div class="form-group"> <label class="col-md-2">State *</label>
                                     <div class="col-lg-6"> <select class="form-control" name="state" id="state" onchange="get_city(this.value)">
                                         <option value="">--Select State--</option>
-                                        <option value="<?php if(!empty($companies[0]->state_id)){ echo $companies[0]->state_id;}?>" <?php if(!empty($companies[0]->state_id)){ echo 'selected';}?>>
-                                                <?php if(!empty($companies[0]->state_name)){ echo $companies[0]->state_name;}?>
-                                            </option>
+                                        <option value=""></option>
                                     </select>
                                     <span class="red" id="old">
                                     <?php echo form_error('state'); ?></span> </div>
@@ -88,9 +84,7 @@
                                 <div class="form-group"> <label class="col-md-2">City *</label>
                                     <div class="col-lg-6"> <select class="form-control" name="city" id="city">
                                         <option value="">--Select City--</option>
-                                        <option value="<?php if(!empty($companies[0]->city)){ echo $companies[0]->city;}?>" <?php if(!empty($companies[0]->city)){ echo 'selected';}?>>
-                                                <?php if(!empty($companies[0]->city_name)){ echo $companies[0]->city_name;}?>
-                                            </option>
+                                        <option value=""></option>
                                     </select>
                                     <span class="red" id="old">
                                             <?php echo form_error('city'); ?></span> </div>
